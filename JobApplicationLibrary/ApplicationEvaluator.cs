@@ -20,6 +20,7 @@ namespace JobApplicationLibrary
             if (form.Applicant.Age < minAge)
                 return ApplicationResult.AutoRejected;
 
+            var isConnectionSucceed = identityValidator.CheckConnectionToRemoteServer();
             var validIDentity = identityValidator.IsValid(form.Applicant.IdentityNumber);
             if (!validIDentity)
                 return ApplicationResult.TransferredToHR;

@@ -31,8 +31,9 @@ namespace JobApplicationLibrary.UnitTest
         public void Application_WithNoTechStack_TransferredToAutoRejected()
         {
             // Arrange
-            var mockValidator = new Mock<IIdentityValidator>();
+            var mockValidator = new Mock<IIdentityValidator>(MockBehavior.Strict);
             mockValidator.Setup(i => i.IsValid(It.IsAny<string>())).Returns(true);
+            mockValidator.Setup(i => i.CheckConnectionToRemoteServer()).Returns(true);
             var evaluator = new ApplicationEvaluator(mockValidator.Object);
             var form = new JobApplication()
             {
@@ -51,7 +52,7 @@ namespace JobApplicationLibrary.UnitTest
         public void Application_WithTechStackOver75P_TransferredToAutoAccepted()
         {
             // Arrange
-            var mockValidator = new Mock<IIdentityValidator>();
+            var mockValidator = new Mock<IIdentityValidator>(MockBehavior.Default);
             mockValidator.Setup(i => i.IsValid(It.IsAny<string>())).Returns(true);
             var evaluator = new ApplicationEvaluator(mockValidator.Object);
             var form = new JobApplication()
@@ -72,7 +73,7 @@ namespace JobApplicationLibrary.UnitTest
         public void Application_WithInvalidIdentityNumber_TransferredToHR()
         {
             // Arrange
-            var mockValidator = new Mock<IIdentityValidator>();
+            var mockValidator = new Mock<IIdentityValidator>(MockBehavior.Loose);
             mockValidator.Setup(i => i.IsValid(It.IsAny<string>())).Returns(false);
             var evaluator = new ApplicationEvaluator(mockValidator.Object);
             var form = new JobApplication()
