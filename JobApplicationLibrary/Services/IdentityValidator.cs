@@ -2,6 +2,8 @@
 {
     public class IdentityValidator : IIdentityValidator
     {
+        public ICountryDataProvider CountryDataProvider => throw new NotImplementedException();
+
         public bool CheckConnectionToRemoteServer()
         {
             throw new NotImplementedException();
