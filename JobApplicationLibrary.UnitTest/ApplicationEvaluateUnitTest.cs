@@ -36,6 +36,7 @@ namespace JobApplicationLibrary.UnitTest
             mockValidator.Setup(i => i.CountryDataProvider.CountryData.Country).Returns("TURKIYE");
             mockValidator.Setup(i => i.IsValid(It.IsAny<string>())).Returns(true);
             mockValidator.Setup(i => i.CheckConnectionToRemoteServer()).Returns(true);
+            mockValidator.SetupProperty(i => i.ValidationMode);
             var evaluator = new ApplicationEvaluator(mockValidator.Object);
             var form = new JobApplication()
             {
@@ -111,6 +112,26 @@ namespace JobApplicationLibrary.UnitTest
 
             // Assert
             Assert.AreEqual(ApplicationResult.TransferredToCTO, appResult);
+        }
+
+        [Test]
+        public void Application_WithOver50_ValidationModeDetailed()
+        {
+            // Arrange
+            var mockValidator = new Mock<IIdentityValidator>();
+            mockValidator.Setup(i => i.CountryDataProvider.CountryData.Country).Returns("SPAIN");
+            mockValidator.SetupProperty(i => i.ValidationMode);
+            var evaluator = new ApplicationEvaluator(mockValidator.Object);
+            var form = new JobApplication()
+            {
+                Applicant = new Applicant { Age = 51 }
+            };
+
+            // Action
+            var appResult = evaluator.Evaulate(form);
+
+            // Assert
+            Assert.AreEqual(ValidationMode.Detailed, mockValidator.Object.ValidationMode);
         }
     }
 }

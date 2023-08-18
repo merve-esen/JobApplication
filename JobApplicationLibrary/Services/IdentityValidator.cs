@@ -4,6 +4,8 @@
     {
         public ICountryDataProvider CountryDataProvider => throw new NotImplementedException();
 
+        public ValidationMode ValidationMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public bool CheckConnectionToRemoteServer()
         {
             throw new NotImplementedException();

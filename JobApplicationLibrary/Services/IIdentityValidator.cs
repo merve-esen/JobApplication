@@ -1,10 +1,20 @@
-﻿namespace JobApplicationLibrary.Services
+﻿using JobApplicationLibrary.Models;
+
+namespace JobApplicationLibrary.Services
 {
     public interface IIdentityValidator
     {
         bool IsValid(string identityNumber);
         bool CheckConnectionToRemoteServer();
         ICountryDataProvider CountryDataProvider { get; }
+        ValidationMode ValidationMode { get; set; }
+    }
+
+    public enum ValidationMode
+    {
+        None,
+        Detailed,
+        Quick
     }
 
     public interface ICountryData
