@@ -1,3 +1,4 @@
+using FluentAssertions;
 using JobApplicationLibrary.Models;
 using JobApplicationLibrary.Services;
 using Moq;
@@ -24,7 +25,8 @@ namespace JobApplicationLibrary.UnitTest
             var appResult = evaluator.Evaulate(form);
 
             // Assert
-            Assert.AreEqual(ApplicationResult.AutoRejected, appResult);
+            //Assert.AreEqual(ApplicationResult.AutoRejected, appResult);
+            appResult.Should().Be(ApplicationResult.AutoRejected);
         }
 
         [Test]
@@ -48,7 +50,8 @@ namespace JobApplicationLibrary.UnitTest
             var appResult = evaluator.Evaulate(form);
 
             // Assert
-            Assert.AreEqual(ApplicationResult.AutoRejected, appResult);
+            //Assert.AreEqual(ApplicationResult.AutoRejected, appResult);
+            appResult.Should().Be(ApplicationResult.AutoRejected);
         }
 
         [Test]
@@ -71,7 +74,8 @@ namespace JobApplicationLibrary.UnitTest
             var appResult = evaluator.Evaulate(form);
 
             // Assert
-            Assert.AreEqual(ApplicationResult.AutoAccepted, appResult);
+            //Assert.AreEqual(ApplicationResult.AutoAccepted, appResult);
+            appResult.Should().Be(ApplicationResult.AutoAccepted);
         }
 
         [Test]
@@ -92,7 +96,8 @@ namespace JobApplicationLibrary.UnitTest
             var appResult = evaluator.Evaulate(form);
 
             // Assert
-            Assert.AreEqual(ApplicationResult.TransferredToHR, appResult);
+            //Assert.AreEqual(ApplicationResult.TransferredToHR, appResult);
+            appResult.Should().Be(ApplicationResult.TransferredToHR);
         }
 
         [Test]
@@ -111,27 +116,25 @@ namespace JobApplicationLibrary.UnitTest
             var appResult = evaluator.Evaulate(form);
 
             // Assert
-            Assert.AreEqual(ApplicationResult.TransferredToCTO, appResult);
+            //Assert.AreEqual(ApplicationResult.TransferredToCTO, appResult);
+            appResult.Should().Be(ApplicationResult.TransferredToCTO);
         }
 
         [Test]
-        public void Application_WithOver50_ValidationModeDetailed()
+        public void Application_WithNullApplicant_ThrowsArgumentNullException()
         {
             // Arrange
             var mockValidator = new Mock<IIdentityValidator>();
-            mockValidator.Setup(i => i.CountryDataProvider.CountryData.Country).Returns("SPAIN");
-            mockValidator.SetupProperty(i => i.ValidationMode);
             var evaluator = new ApplicationEvaluator(mockValidator.Object);
-            var form = new JobApplication()
-            {
-                Applicant = new Applicant { Age = 51 }
-            };
+            var form = new JobApplication();
 
             // Action
-            var appResult = evaluator.Evaulate(form);
+            Action appResultAction = () => evaluator.Evaulate(form);
 
             // Assert
-            Assert.AreEqual(ValidationMode.Detailed, mockValidator.Object.ValidationMode);
+            appResultAction.Should().Throw<ArgumentNullException>();
         }
+
+
     }
 }
