@@ -134,7 +134,5 @@ namespace JobApplicationLibrary.UnitTest
             // Assert
             appResultAction.Should().Throw<ArgumentNullException>();
         }
-
-
     }
 }
